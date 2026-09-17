@@ -19,9 +19,10 @@ export default function Home() {
         <section className="flex min-h-[88vh] flex-col justify-center px-6 py-20">
           <div className="mx-auto w-full max-w-5xl">
             <p className="animate-fade-up font-mono text-xs tracking-widest text-accent">
-              Backend Engineer · AI Infrastructure · Hyderabad
+              <span className="sm:hidden">Backend Engineer · Hyderabad</span>
+              <span className="hidden sm:inline">Backend Engineer · AI Infrastructure · Hyderabad</span>
             </p>
-            <h1 className="animate-fade-up animate-delay-100 mt-6 font-display text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
+            <h1 className="animate-fade-up animate-delay-100 mt-6 break-words font-display text-4xl font-bold leading-[1.08] tracking-tight sm:text-6xl lg:text-7xl">
               {profile.headline}
             </h1>
             <p className="animate-fade-up animate-delay-200 mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
@@ -105,7 +106,7 @@ export default function Home() {
                       </span>
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                          <h3 className="font-display text-xl font-semibold transition-colors group-hover:text-accent sm:text-2xl">
+                          <h3 className="break-words font-display text-xl font-semibold transition-colors group-hover:text-accent sm:text-2xl">
                             {project.name}
                           </h3>
                           <Link

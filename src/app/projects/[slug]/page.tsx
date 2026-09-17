@@ -90,7 +90,7 @@ export default async function ProjectPage({
         {/* Header */}
         <div className="mt-8 border-b border-border pb-10">
           <p className="font-mono text-xs tracking-widest text-accent">Case Study</p>
-          <h1 className="mt-3 max-w-3xl font-display text-4xl font-bold leading-tight sm:text-5xl">
+          <h1 className="mt-3 max-w-3xl break-words font-display text-4xl font-bold leading-tight sm:text-5xl">
             {project.name}
           </h1>
           <p className="mt-4 max-w-xl text-muted">{project.summary}</p>

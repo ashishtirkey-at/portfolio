@@ -35,7 +35,7 @@ export default function ProjectsPage() {
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                      <h2 className="font-display text-xl font-semibold transition-colors group-hover:text-accent sm:text-2xl">
+                      <h2 className="break-words font-display text-xl font-semibold transition-colors group-hover:text-accent sm:text-2xl">
                         {project.name}
                       </h2>
                       <Link
