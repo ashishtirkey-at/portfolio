@@ -34,6 +34,23 @@ export async function generateMetadata({
   };
 }
 
+function SectionRow({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-4 border-t border-border py-10 sm:flex-row sm:gap-16">
+      <p className="shrink-0 font-mono text-xs tracking-widest text-accent sm:w-36 sm:pt-0.5">
+        {label}
+      </p>
+      <div className="min-w-0 flex-1">{children}</div>
+    </div>
+  );
+}
+
 export default async function ProjectPage({
   params,
 }: {
@@ -45,9 +62,10 @@ export default async function ProjectPage({
 
   const project = caseStudies[currentIndex];
   const prevProject = currentIndex > 0 ? caseStudies[currentIndex - 1] : null;
-  const nextProject = currentIndex < caseStudies.length - 1 ? caseStudies[currentIndex + 1] : null;
+  const nextProject =
+    currentIndex < caseStudies.length - 1 ? caseStudies[currentIndex + 1] : null;
 
-  const sections: { title: string; body?: string }[] = [
+  const proseSections: { title: string; body?: string }[] = [
     { title: "Problem", body: project.problem },
     { title: "Architecture", body: project.architecture },
     { title: "Reliability", body: project.reliability },
@@ -58,94 +76,88 @@ export default async function ProjectPage({
   return (
     <>
       <Nav />
-      <main id="main-content" className="mx-auto w-full max-w-3xl flex-1 px-6 py-14">
+      <main id="main-content" className="mx-auto w-full max-w-5xl flex-1 px-6 py-14">
 
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-muted">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 font-mono text-xs text-muted">
           <Link href="/projects" className="transition-colors hover:text-accent">
             Projects
           </Link>
           <span aria-hidden="true">/</span>
-          <span className="text-foreground/70">{project.name}</span>
+          <span className="text-foreground/60 truncate">{project.name}</span>
         </nav>
 
         {/* Header */}
-        <h1 className="mt-6 text-3xl font-semibold tracking-tight">{project.name}</h1>
-        <p className="mt-3 max-w-[62ch] text-muted">{project.summary}</p>
-
-        <div className="mt-4 flex flex-wrap gap-2">
-          {project.stack.map((tech) => (
-            <span
-              key={tech}
-              className="rounded border border-border px-2 py-1 font-mono text-xs text-muted"
-            >
-              {tech}
-            </span>
-          ))}
+        <div className="mt-8 border-b border-border pb-10">
+          <p className="font-mono text-xs tracking-widest text-accent">Case Study</p>
+          <h1 className="mt-3 max-w-3xl font-display text-4xl font-bold leading-tight sm:text-5xl">
+            {project.name}
+          </h1>
+          <p className="mt-4 max-w-xl text-muted">{project.summary}</p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {project.stack.map((tech) => (
+              <span
+                key={tech}
+                className="rounded border border-border px-2 py-0.5 font-mono text-xs text-muted"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
         </div>
 
-        {/* Metrics */}
-        <div className="mt-8 rounded-lg border border-border p-5">
-          {project.metrics.map((metric) => (
-            <DiffMetricRow key={metric.label} metric={metric} />
-          ))}
-        </div>
+        {/* Results at a glance */}
+        <SectionRow label="Results at a glance">
+          <div className="max-w-sm divide-y divide-border">
+            {project.metrics.map((metric) => (
+              <DiffMetricRow key={metric.label} metric={metric} />
+            ))}
+          </div>
+        </SectionRow>
 
         {/* My Role */}
         {project.myRole && (
-          <div className="mt-8 rounded-lg border border-border bg-surface p-5">
-            <h2 className="text-sm font-semibold text-accent">My Role</h2>
-            <p className="mt-2 max-w-[62ch] leading-relaxed text-foreground/90">
-              {project.myRole}
-            </p>
-          </div>
+          <SectionRow label="My Role">
+            <p className="max-w-2xl leading-relaxed text-foreground/90">{project.myRole}</p>
+          </SectionRow>
         )}
 
-        {/* Prose sections: Problem, Architecture, Reliability, Trade-off, Evaluation */}
-        <div className="mt-10 space-y-10">
-          {sections
-            .filter((s) => s.body)
-            .map((section) => (
-              <section key={section.title}>
-                <h2 className="text-sm font-semibold text-accent">{section.title}</h2>
-                <p className="mt-3 max-w-[62ch] leading-relaxed text-foreground/90">
-                  {section.body}
-                </p>
-              </section>
-            ))}
+        {/* Prose sections */}
+        {proseSections
+          .filter((s) => s.body)
+          .map((section) => (
+            <SectionRow key={section.title} label={section.title}>
+              <p className="max-w-2xl leading-relaxed text-foreground/90">{section.body}</p>
+            </SectionRow>
+          ))}
 
-          {/* Engineering Challenge */}
-          {project.incident && (
-            <section>
-              <h2 className="text-sm font-semibold text-accent">Engineering Challenge</h2>
-              <p className="mt-1 text-sm text-muted">{project.incident.title}</p>
-              <p className="mt-3 max-w-[62ch] leading-relaxed text-foreground/90">
-                {project.incident.body}
-              </p>
-            </section>
-          )}
+        {/* Engineering Challenge */}
+        {project.incident && (
+          <SectionRow label="Engineering Challenge">
+            <div className="max-w-2xl">
+              <p className="font-display text-xl font-semibold">{project.incident.title}</p>
+              <p className="mt-4 leading-relaxed text-foreground/90">{project.incident.body}</p>
+            </div>
+          </SectionRow>
+        )}
 
-          {/* Results */}
-          <section>
-            <h2 className="text-sm font-semibold text-accent">Results</h2>
-            <p className="mt-3 max-w-[62ch] leading-relaxed text-foreground/90">
-              {project.result}
-            </p>
-          </section>
-        </div>
+        {/* Results */}
+        <SectionRow label="Results">
+          <p className="max-w-2xl leading-relaxed text-foreground/90">{project.result}</p>
+        </SectionRow>
 
-        {/* Prev / Next navigation */}
-        <div className="mt-16 border-t border-border pt-8">
+        {/* Prev / Next */}
+        <div className="mt-4 border-t border-border pt-10">
           <div className="flex items-start justify-between gap-8">
             {prevProject ? (
               <Link
                 href={`/projects/${prevProject.slug}`}
                 className="group flex flex-col gap-1"
               >
-                <span className="text-xs text-muted transition-colors group-hover:text-accent">
+                <span className="font-mono text-xs text-muted transition-colors group-hover:text-accent">
                   ← Previous
                 </span>
-                <span className="text-sm font-medium transition-colors group-hover:text-accent">
+                <span className="font-display text-base font-semibold transition-colors group-hover:text-accent">
                   {prevProject.name}
                 </span>
               </Link>
@@ -155,12 +167,12 @@ export default async function ProjectPage({
             {nextProject && (
               <Link
                 href={`/projects/${nextProject.slug}`}
-                className="group flex flex-col items-end gap-1"
+                className="group flex flex-col items-end gap-1 text-right"
               >
-                <span className="text-xs text-muted transition-colors group-hover:text-accent">
+                <span className="font-mono text-xs text-muted transition-colors group-hover:text-accent">
                   Next →
                 </span>
-                <span className="text-sm font-medium text-right transition-colors group-hover:text-accent">
+                <span className="font-display text-base font-semibold transition-colors group-hover:text-accent">
                   {nextProject.name}
                 </span>
               </Link>
