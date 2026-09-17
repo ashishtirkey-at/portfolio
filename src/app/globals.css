@@ -3,14 +3,14 @@
 /* ─── Light theme (default / SSR baseline) ─── */
 :root,
 html[data-theme="light"] {
-  --background: #F7F6F2;
-  --foreground: #17191D;
-  --muted: #626A76;
-  --accent: #92651A;
-  --surface: #FFFFFF;
-  --border: #DFE1E5;
-  --diff-add: #2D6B3E;
-  --diff-remove: #8B2B27;
+  --background: #F4EFE6;
+  --foreground: #1A1611;
+  --muted: #66615B;
+  --accent: #8A5C0F;
+  --surface: #FDFAF6;
+  --border: #DDD6C5;
+  --diff-add: #2C6840;
+  --diff-remove: #892B27;
 }
 
 /* ─── Dark theme ─── */
