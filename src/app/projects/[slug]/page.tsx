@@ -3,7 +3,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Nav } from "@/components/nav";
 import { DiffMetricRow } from "@/components/diff-metric";
+import { ConfigPlatformDiagram } from "@/components/diagrams/config-platform";
+import { AlertSenderDiagram } from "@/components/diagrams/alert-sender";
+import { LlmGuardrailDiagram } from "@/components/diagrams/llm-guardrail";
 import { caseStudies } from "@/content/data";
+
+const DIAGRAMS: Record<string, React.ComponentType> = {
+  "config-platform": ConfigPlatformDiagram,
+  "alert-sender": AlertSenderDiagram,
+  "llm-guardrail-middleware": LlmGuardrailDiagram,
+};
 
 export function generateStaticParams() {
   return caseStudies.map((project) => ({ slug: project.slug }));
@@ -65,9 +74,9 @@ export default async function ProjectPage({
   const nextProject =
     currentIndex < caseStudies.length - 1 ? caseStudies[currentIndex + 1] : null;
 
-  const proseSections: { title: string; body?: string }[] = [
-    { title: "Problem", body: project.problem },
-    { title: "Architecture", body: project.architecture },
+  const Diagram = DIAGRAMS[project.slug] ?? null;
+
+  const trailingSections: { title: string; body?: string }[] = [
     { title: "Reliability", body: project.reliability },
     { title: "Trade-off", body: project.tradeoff },
     { title: "Evaluation", body: project.evaluation },
@@ -122,8 +131,29 @@ export default async function ProjectPage({
           </SectionRow>
         )}
 
-        {/* Prose sections */}
-        {proseSections
+        {/* Problem */}
+        {project.problem && (
+          <SectionRow label="Problem">
+            <p className="max-w-2xl leading-relaxed text-foreground/90">{project.problem}</p>
+          </SectionRow>
+        )}
+
+        {/* Architecture prose */}
+        {project.architecture && (
+          <SectionRow label="Architecture">
+            <p className="max-w-2xl leading-relaxed text-foreground/90">{project.architecture}</p>
+          </SectionRow>
+        )}
+
+        {/* Architecture diagram — positioned directly after the architecture prose */}
+        {Diagram && (
+          <SectionRow label="System Overview">
+            <Diagram />
+          </SectionRow>
+        )}
+
+        {/* Reliability, Trade-off, Evaluation */}
+        {trailingSections
           .filter((s) => s.body)
           .map((section) => (
             <SectionRow key={section.title} label={section.title}>
