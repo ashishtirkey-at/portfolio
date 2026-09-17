@@ -1,9 +1,14 @@
 export const profile = {
   name: "Ashish Tirkey",
-  headline: "I build the backend systems that make AI products reliable",
+  headline: "Backend Software Engineer specializing in Distributed Systems and AI Infrastructure",
+  tagline:
+    "Four years building distributed backend systems — config propagation, production observability, and LLM guardrail infrastructure. Based in Hyderabad.",
   location: "Hyderabad, India",
-  about:
-    "I'm a backend software engineer with ~4 years of experience, most recently at Kore.ai in Hyderabad, where I built distributed systems and AI infrastructure for enterprise conversational AI platforms — including a configuration management platform serving 25+ engineering teams and an LLM guardrail middleware layer protecting DialogGPT integrations. My core stack is Node.js, Express, MongoDB, and Redis, and I'm currently deepening my skills in production RAG pipelines and agentic AI systems. I hold a B.Tech in Electronics and Communication Engineering from NIT Jamshedpur.",
+  about: [
+    "Backend software engineer with four years of experience at Kore.ai, where I designed and owned three backend systems end to end — a distributed configuration platform, a production alerting service, and an LLM guardrail middleware layer protecting AI integrations.",
+    "My core stack is Node.js, Express.js, MongoDB, and Redis. I hold a B.Tech in Electronics and Communication Engineering from NIT Jamshedpur. Currently deepening my skills in production RAG pipelines and agentic AI systems.",
+  ],
+  techStack: ["Node.js", "Express.js", "MongoDB", "Redis", "Docker", "GitHub Actions", "AWS EC2", "Loki"],
   email: "ashish.tirkey2399@gmail.com",
   github: "https://github.com/ashishtirkey-at",
   linkedin: "https://www.linkedin.com/in/ashish-tirkey-9a69661b6",
@@ -13,12 +18,39 @@ export type ExperienceEntry = {
   role: string;
   company: string;
   dates: string;
+  bullets?: string[];
 };
 
 export const experience: ExperienceEntry[] = [
-  { role: "Backend Software Engineer", company: "Kore.ai", dates: "Jan 2024 – May 2026" },
-  { role: "Associate Software Engineer", company: "Kore.ai", dates: "July 2022 – Jan 2024" },
-  { role: "Intern", company: "Samsung Research Institute", dates: "Feb – Apr 2022" },
+  {
+    role: "Backend Software Engineer",
+    company: "Kore.ai",
+    dates: "Jan 2024 – May 2026",
+    bullets: [
+      "Designed and owned a distributed configuration platform serving 8 engineering teams, propagating versioned config across 100+ microservices via Redis Pub/Sub — reduced config-related deployment incidents by ~30% over 6 months.",
+      "Built an LLM guardrail middleware layer in the synchronous request path, cutting policy-violating outputs by ~35% across 10,000+ users (A/B validated) with no meaningful drop in session completion rate.",
+      "Built a production alerting service that reduced mean time to detect from >30 min to 18 min and P1 resolution time from ~2 hours to under 45 min.",
+      "Automated deployment pipelines with GitHub Actions on AWS EC2, reducing deployment time from ~20 min to under 5 min.",
+    ],
+  },
+  {
+    role: "Associate Software Engineer",
+    company: "Kore.ai",
+    dates: "Jul 2022 – Jan 2024",
+    bullets: [
+      "Contributed to API development, data modelling, and background job processing for the core conversational AI platform using Node.js, Express.js, and MongoDB.",
+      "Wrote the initial configuration service that later evolved into the full orchestration platform — identified the configuration management problem early and led the transition from ad-hoc config files to a versioned service.",
+    ],
+  },
+  {
+    role: "Software Engineering Intern",
+    company: "Samsung Research Institute",
+    dates: "Feb 2022 – Apr 2022",
+    bullets: [
+      "Built backend REST APIs using Spring Boot.",
+      "Developed a Java regression test suite automating 40+ test scenarios, reducing manual QA time by ~60%.",
+    ],
+  },
 ];
 
 export const education = {
@@ -38,6 +70,7 @@ export type CaseStudy = {
   name: string;
   summary: string;
   stack: string[];
+  myRole?: string;
   problem: string;
   architecture: string;
   reliability?: string;
@@ -55,6 +88,8 @@ export const caseStudies: CaseStudy[] = [
     summary:
       "Replaced a static config file shared by 100+ microservices with a real-time propagation platform serving 25+ engineering teams.",
     stack: ["Node.js", "Express", "MongoDB", "Redis", "Redis Pub/Sub", "Docker"],
+    myRole:
+      "Owned this system end to end as Backend Software Engineer — from initial architecture and API design through deployment, production incident response, and adoption across 8 engineering teams. Wrote architecture decision records and collaborated with DevOps and QA throughout.",
     problem:
       "100+ microservices depended on a static koreConfig file — every change required manual edits and a service restart, causing deployment delays, downtime, and difficult rollbacks across both cloud and on-prem customers.",
     architecture:
@@ -80,6 +115,8 @@ export const caseStudies: CaseStudy[] = [
     summary:
       "Built automated production alerting from scratch, cutting mean time to detect incidents by 40% across 15+ services.",
     stack: ["Loki", "LogQL", "Node.js"],
+    myRole:
+      "Built this system from scratch as the sole engineer — defined the alerting strategy, implemented the LogQL polling layer and deduplication logic, and operated it across 15+ production services.",
     problem:
       "There was no automated alerting — incidents were caught through manual log checks, keeping mean time to detect (MTTD) around 30 minutes.",
     architecture:
@@ -105,6 +142,8 @@ export const caseStudies: CaseStudy[] = [
     summary:
       "Added a safety and validation layer in front of a conversational AI product, cutting added latency by 75% while reducing unsafe outputs by 35%.",
     stack: ["Node.js", "Redis", "OpenAI API", "External guardrail APIs"],
+    myRole:
+      "Designed and implemented the middleware layer end to end — including the provider-adapter registry, parallel policy check execution, Redis TTL caching strategy, and the A/B test framework used to validate impact across 10,000+ users.",
     problem:
       "DialogGPT-based conversational AI integrations had no validation layer in front of them — no defense against toxic output, PII leakage, or prompt injection.",
     architecture:

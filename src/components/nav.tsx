@@ -15,15 +15,18 @@ export function Nav() {
           Ashish Tirkey
         </Link>
         <nav className="flex items-center gap-6 text-sm text-muted">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="transition-colors hover:text-foreground"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {/* Hidden on mobile, visible sm+ */}
+          <div className="hidden items-center gap-6 sm:flex">
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="transition-colors hover:text-foreground"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
           <a
             href="/Ashish_Tirkey_Resume.pdf"
             download
