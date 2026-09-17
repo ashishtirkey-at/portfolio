@@ -40,8 +40,12 @@ export default async function ProjectPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const project = caseStudies.find((p) => p.slug === slug);
-  if (!project) notFound();
+  const currentIndex = caseStudies.findIndex((p) => p.slug === slug);
+  if (currentIndex === -1) notFound();
+
+  const project = caseStudies[currentIndex];
+  const prevProject = currentIndex > 0 ? caseStudies[currentIndex - 1] : null;
+  const nextProject = currentIndex < caseStudies.length - 1 ? caseStudies[currentIndex + 1] : null;
 
   const sections: { title: string; body?: string }[] = [
     { title: "Problem", body: project.problem },
@@ -55,14 +59,18 @@ export default async function ProjectPage({
     <>
       <Nav />
       <main id="main-content" className="mx-auto w-full max-w-3xl flex-1 px-6 py-14">
-        <Link href="/#projects" className="text-sm text-muted transition-colors hover:text-accent">
-          ← Back to work
-        </Link>
+
+        {/* Breadcrumb */}
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-muted">
+          <Link href="/projects" className="transition-colors hover:text-accent">
+            Projects
+          </Link>
+          <span aria-hidden="true">/</span>
+          <span className="text-foreground/70">{project.name}</span>
+        </nav>
 
         {/* Header */}
-        <h1 className="mt-6 text-3xl font-semibold tracking-tight">
-          {project.name}
-        </h1>
+        <h1 className="mt-6 text-3xl font-semibold tracking-tight">{project.name}</h1>
         <p className="mt-3 max-w-[62ch] text-muted">{project.summary}</p>
 
         <div className="mt-4 flex flex-wrap gap-2">
@@ -93,43 +101,74 @@ export default async function ProjectPage({
           </div>
         )}
 
-        {/* Prose sections */}
+        {/* Prose sections: Problem, Architecture, Reliability, Trade-off, Evaluation */}
         <div className="mt-10 space-y-10">
           {sections
             .filter((s) => s.body)
             .map((section) => (
               <section key={section.title}>
-                <h2 className="text-sm font-semibold text-accent">
-                  {section.title}
-                </h2>
+                <h2 className="text-sm font-semibold text-accent">{section.title}</h2>
                 <p className="mt-3 max-w-[62ch] leading-relaxed text-foreground/90">
                   {section.body}
                 </p>
               </section>
             ))}
 
+          {/* Engineering Challenge */}
           {project.incident && (
             <section>
-              <h2 className="text-sm font-semibold text-accent">
-                {project.incident.title}
-              </h2>
+              <h2 className="text-sm font-semibold text-accent">Engineering Challenge</h2>
+              <p className="mt-1 text-sm text-muted">{project.incident.title}</p>
               <p className="mt-3 max-w-[62ch] leading-relaxed text-foreground/90">
                 {project.incident.body}
               </p>
             </section>
           )}
 
+          {/* Results */}
           <section>
-            <h2 className="text-sm font-semibold text-accent">Result</h2>
+            <h2 className="text-sm font-semibold text-accent">Results</h2>
             <p className="mt-3 max-w-[62ch] leading-relaxed text-foreground/90">
               {project.result}
             </p>
           </section>
         </div>
+
+        {/* Prev / Next navigation */}
+        <div className="mt-16 border-t border-border pt-8">
+          <div className="flex items-start justify-between gap-8">
+            {prevProject ? (
+              <Link
+                href={`/projects/${prevProject.slug}`}
+                className="group flex flex-col gap-1"
+              >
+                <span className="text-xs text-muted transition-colors group-hover:text-accent">
+                  ← Previous
+                </span>
+                <span className="text-sm font-medium transition-colors group-hover:text-accent">
+                  {prevProject.name}
+                </span>
+              </Link>
+            ) : (
+              <span />
+            )}
+            {nextProject && (
+              <Link
+                href={`/projects/${nextProject.slug}`}
+                className="group flex flex-col items-end gap-1"
+              >
+                <span className="text-xs text-muted transition-colors group-hover:text-accent">
+                  Next →
+                </span>
+                <span className="text-sm font-medium text-right transition-colors group-hover:text-accent">
+                  {nextProject.name}
+                </span>
+              </Link>
+            )}
+          </div>
+        </div>
+
       </main>
-      <footer className="border-t border-border py-8 text-center text-xs text-muted">
-        Ashish Tirkey — built with Next.js
-      </footer>
     </>
   );
 }
