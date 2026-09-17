@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, IBM_Plex_Mono, Fraunces } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { profile } from "@/content/data";
 
@@ -46,9 +47,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${plexSans.variable} ${plexMono.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
+        {/* Runs before React hydrates — reads localStorage and sets data-theme to avoid flash */}
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t)}catch(e){}})();`,
+          }}
+        />
         <a
           href="#main-content"
           className="absolute -top-full left-4 z-50 rounded bg-accent px-4 py-2 text-sm font-medium text-background focus-visible:top-4"

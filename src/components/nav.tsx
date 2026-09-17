@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, startTransition } from "react";
 import { profile } from "@/content/data";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const links = [
   { href: "/", label: "Home" },
@@ -31,6 +32,15 @@ export function Nav() {
   useEffect(() => {
     startTransition(() => setOpen(false));
   }, [pathname]);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") startTransition(() => setOpen(false));
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [open]);
 
   return (
     <>
@@ -63,22 +73,28 @@ export function Nav() {
             ))}
           </nav>
 
-          {/* Hamburger */}
-          <button
-            className="p-1.5 text-muted transition-colors hover:text-foreground sm:hidden"
-            onClick={() => setOpen(true)}
-            aria-label="Open navigation menu"
-            aria-expanded={open}
-          >
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-              <path
-                d="M3 5h14M3 10h14M3 15h14"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
+          {/* Desktop theme toggle */}
+          <ThemeToggle className="hidden sm:inline-flex" />
+
+          {/* Mobile: theme toggle + hamburger */}
+          <div className="flex items-center gap-0.5 sm:hidden">
+            <ThemeToggle />
+            <button
+              className="p-1.5 text-muted transition-colors hover:text-foreground"
+              onClick={() => setOpen(true)}
+              aria-label="Open navigation menu"
+              aria-expanded={open}
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path
+                  d="M3 5h14M3 10h14M3 15h14"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -130,23 +146,26 @@ export function Nav() {
             ))}
           </nav>
 
-          <div className="flex gap-6 border-t border-border px-6 py-5 text-sm text-muted">
-            <a
-              href={profile.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-foreground"
-            >
-              GitHub
-            </a>
-            <a
-              href={profile.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-foreground"
-            >
-              LinkedIn
-            </a>
+          <div className="flex items-center justify-between border-t border-border px-6 py-5">
+            <div className="flex gap-6 text-sm text-muted">
+              <a
+                href={profile.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-foreground"
+              >
+                GitHub
+              </a>
+              <a
+                href={profile.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-foreground"
+              >
+                LinkedIn
+              </a>
+            </div>
+            <ThemeToggle />
           </div>
         </div>
       )}

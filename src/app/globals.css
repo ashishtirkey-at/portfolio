@@ -1,14 +1,28 @@
 @import "tailwindcss";
 
-:root {
-  --background: #0e1116;
-  --foreground: #edede8;
-  --muted: #8a93a3;
-  --accent: #d9a441;
+/* ─── Light theme (default / SSR baseline) ─── */
+:root,
+html[data-theme="light"] {
+  --background: #F7F6F2;
+  --foreground: #17191D;
+  --muted: #626A76;
+  --accent: #92651A;
+  --surface: #FFFFFF;
+  --border: #DFE1E5;
+  --diff-add: #2D6B3E;
+  --diff-remove: #8B2B27;
+}
+
+/* ─── Dark theme ─── */
+html[data-theme="dark"] {
+  --background: #0E1116;
+  --foreground: #F2F0EA;
+  --muted: #8A93A3;
+  --accent: #D9A441;
   --surface: #151920;
-  --border: #262b34;
-  --diff-add: #6fa37a;
-  --diff-remove: #c4635a;
+  --border: #262B34;
+  --diff-add: #6FA37A;
+  --diff-remove: #C4635A;
 }
 
 @theme inline {
@@ -44,9 +58,22 @@ body {
 
 /* Nav backdrop */
 .nav-backdrop {
-  background-color: color-mix(in srgb, var(--background) 85%, transparent);
+  background-color: color-mix(in srgb, var(--background) 88%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+
+/* Smooth theme transition — only fires during the 300ms toggle window */
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-transitioning,
+  html.theme-transitioning *,
+  html.theme-transitioning *::before,
+  html.theme-transitioning *::after {
+    transition:
+      background-color 0.25s ease,
+      border-color 0.25s ease,
+      color 0.25s ease !important;
+  }
 }
 
 /* Hero fade-up animation */
