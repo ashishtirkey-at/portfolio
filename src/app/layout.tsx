@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { IBM_Plex_Sans, IBM_Plex_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
+import { profile } from "@/content/data";
 
 const plexSans = IBM_Plex_Sans({
   variable: "--font-plex-sans",
@@ -12,6 +13,12 @@ const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
   subsets: ["latin"],
   weight: ["400", "500"],
+});
+
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  weight: ["400", "700", "900"],
 });
 
 export const metadata: Metadata = {
@@ -35,13 +42,13 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://ashishtirkey.vercel.app"),
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${plexSans.variable} ${plexMono.variable} h-full antialiased`}
+      className={`${plexSans.variable} ${plexMono.variable} ${fraunces.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="flex min-h-full flex-col bg-background text-foreground">
         <a
           href="#main-content"
           className="absolute -top-full left-4 z-50 rounded bg-accent px-4 py-2 text-sm font-medium text-background focus-visible:top-4"
@@ -49,8 +56,28 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         {children}
-        <footer className="border-t border-border py-8 text-center text-xs text-muted">
-          Ashish Tirkey — built with Next.js
+        <footer className="border-t border-border py-8">
+          <div className="mx-auto flex max-w-5xl flex-col gap-4 px-6 sm:flex-row sm:items-center sm:justify-between">
+            <p className="font-mono text-xs text-muted">{profile.name} · {new Date().getFullYear()}</p>
+            <div className="flex gap-6 text-xs text-muted">
+              <a
+                href={profile.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-foreground"
+              >
+                GitHub
+              </a>
+              <a
+                href={profile.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-foreground"
+              >
+                LinkedIn
+              </a>
+            </div>
+          </div>
         </footer>
       </body>
     </html>

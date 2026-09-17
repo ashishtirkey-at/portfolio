@@ -1,6 +1,15 @@
+export const skills = [
+  { category: "Languages", items: ["JavaScript", "TypeScript"] },
+  { category: "Backend & APIs", items: ["Node.js", "Express.js", "REST APIs", "Microservices"] },
+  { category: "Databases & Caching", items: ["MongoDB", "Redis"] },
+  { category: "Messaging & Distributed", items: ["RabbitMQ", "Redis Pub/Sub"] },
+  { category: "AI / LLM", items: ["LLM Guardrails", "RAG", "LLM Integrations"] },
+  { category: "Infrastructure", items: ["Docker", "GitHub Actions", "AWS EC2", "Loki"] },
+];
+
 export const profile = {
   name: "Ashish Tirkey",
-  headline: "Backend Software Engineer specializing in Distributed Systems and AI Infrastructure",
+  headline: "I build backend systems that scale and AI infrastructure you can rely on.",
   tagline:
     "Four years building distributed backend systems — config propagation, production observability, and LLM guardrail infrastructure. Based in Hyderabad.",
   location: "Hyderabad, India",

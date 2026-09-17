@@ -46,7 +46,7 @@ export default function ResumePage() {
         {/* Mobile: download prompt */}
         <div className="mt-6 rounded-lg border border-border p-8 sm:hidden">
           <p className="text-sm leading-relaxed text-muted">
-            Inline PDF viewing isn't supported on most mobile browsers. Download the resume to view it.
+            Inline PDF viewing isn&apos;t supported on most mobile browsers. Download the resume to view it.
           </p>
           <a
             href="/Ashish_Tirkey_Resume.pdf"

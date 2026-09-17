@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nav } from "@/components/nav";
-import { profile, education } from "@/content/data";
+import { AnimateIn } from "@/components/animate-in";
+import { profile, education, skills } from "@/content/data";
 
 export const metadata: Metadata = {
   title: "About — Ashish Tirkey",
@@ -12,63 +13,71 @@ export default function AboutPage() {
   return (
     <>
       <Nav />
-      <main id="main-content" className="mx-auto w-full max-w-3xl flex-1 px-6 py-14">
+      <main id="main-content" className="mx-auto w-full max-w-5xl flex-1 px-6 py-16">
 
-        <h1 className="text-3xl font-semibold tracking-tight">About</h1>
+        <AnimateIn>
+          <p className="font-mono text-xs tracking-widest text-accent">Background</p>
+          <h1 className="mt-2 font-display text-4xl font-bold sm:text-5xl">About</h1>
+        </AnimateIn>
 
-        {/* Background */}
-        <section className="mt-10">
-          <h2 className="text-sm font-semibold text-accent">Background</h2>
-          <div className="mt-4 max-w-[62ch] space-y-4">
-            {profile.about.map((para) => (
-              <p key={para} className="leading-relaxed text-foreground/90">
-                {para}
-              </p>
-            ))}
+        {/* About text */}
+        <AnimateIn delay={80} className="mt-10 max-w-2xl space-y-5 border-t border-border pt-10">
+          {profile.about.map((para) => (
+            <p key={para} className="leading-relaxed text-foreground/90">
+              {para}
+            </p>
+          ))}
+        </AnimateIn>
+
+        {/* Skills */}
+        <AnimateIn delay={100}>
+          <div className="mt-14 border-t border-border pt-10">
+            <p className="font-mono text-xs tracking-widest text-accent">Skills</p>
+            <h2 className="mt-2 font-display text-2xl font-bold">Technical stack</h2>
           </div>
-        </section>
+        </AnimateIn>
 
-        {/* Stack */}
-        <section className="mt-10">
-          <h2 className="text-sm font-semibold text-accent">Core stack</h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {profile.techStack.map((tech) => (
-              <span
-                key={tech}
-                className="rounded border border-border px-2 py-1 font-mono text-xs text-muted"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </section>
+        <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
+          {skills.map((group, i) => (
+            <AnimateIn key={group.category} delay={i * 60}>
+              <p className="font-mono text-xs tracking-widest text-accent">{group.category}</p>
+              <ul className="mt-3 space-y-1.5">
+                {group.items.map((item) => (
+                  <li key={item} className="text-sm text-foreground/80">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </AnimateIn>
+          ))}
+        </div>
 
         {/* Currently exploring */}
-        <section className="mt-10">
-          <h2 className="text-sm font-semibold text-accent">Currently exploring</h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {["Production RAG pipelines", "Agentic AI systems"].map((area) => (
-              <span
-                key={area}
-                className="rounded border border-border px-2 py-1 font-mono text-xs text-muted"
-              >
-                {area}
-              </span>
-            ))}
-          </div>
-        </section>
-
-        {/* Education */}
-        <section className="mt-10">
-          <h2 className="text-sm font-semibold text-accent">Education</h2>
-          <div className="mt-4">
-            <p className="font-medium">{education.degree}</p>
-            <div className="mt-1 flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-4">
-              <p className="text-sm text-muted">{education.school}</p>
-              <p className="font-mono text-sm text-muted">{education.dates}</p>
+        <AnimateIn delay={80}>
+          <div className="mt-14 border-t border-border pt-10">
+            <p className="font-mono text-xs tracking-widest text-accent">Currently exploring</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {["Production RAG pipelines", "Agentic AI systems"].map((area) => (
+                <span
+                  key={area}
+                  className="rounded border border-border px-3 py-1 font-mono text-xs text-muted"
+                >
+                  {area}
+                </span>
+              ))}
             </div>
           </div>
-        </section>
+        </AnimateIn>
+
+        {/* Education */}
+        <AnimateIn delay={80}>
+          <div className="mt-14 border-t border-border pt-10">
+            <p className="font-mono text-xs tracking-widest text-accent">Education</p>
+            <h2 className="mt-2 font-display text-2xl font-bold">{education.school}</h2>
+            <p className="mt-1 text-foreground/80">{education.degree}</p>
+            <p className="mt-0.5 font-mono text-sm text-muted">{education.dates}</p>
+          </div>
+        </AnimateIn>
 
       </main>
     </>
